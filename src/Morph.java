@@ -47,24 +47,21 @@ public class Morph {
 
 	public void paintComponent(Graphics g) {
 		// TODO Auto-generated method stub
-		
+		double ratio = (OldWidth/2.0)/(steps*1.0);
+		double size = OldWidth - ratio*Timer;
+		double gap = ratio*Timer;
+		g.setColor(color);
+		g.fillOval(x, y, (int)size, (int)size);
+		g.fillOval(x+(int)gap, y, (int)size, (int)size);
+		g.fillOval(x+(int)gap, y+(int)gap, (int)size, (int)size);
+		g.fillOval(x, y+(int)gap, (int)size, (int)size);
 	}
 
-
-	/**
-	 * @param timer2
-	 */
 	public void update() {
 		Timer++;
-		if(Timer==steps)
-		{
+		if(Timer==steps)	{
 			complete = true;
 			return;
 		}
-		
-		
-		// TODO Auto-generated method stub
-		
-		
 	}
 }
