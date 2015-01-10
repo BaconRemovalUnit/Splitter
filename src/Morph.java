@@ -41,9 +41,7 @@ public class Morph {
 		
 		if(OldWidth<=BaseLength||OldHeight<=BaseLength)
 			complete = true;
-		
 	}
-
 
 	public void paintComponent(Graphics g) {
 		// TODO Auto-generated method stub

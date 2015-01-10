@@ -16,7 +16,6 @@ import javax.swing.JButton;
  */
 
 public class Node{
-
 	//starting coordinates
 	int x;
 	int y;
@@ -54,9 +53,4 @@ public class Node{
     public boolean contains(int x, int y) {
         return shape.contains(x, y);
     }
-    
-
-
-
-
 }

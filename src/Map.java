@@ -29,17 +29,19 @@ public class Map extends JPanel{
 	ArrayList<Node> nodes = new ArrayList<Node>();
 	ArrayList<Node> dead = new ArrayList<Node>();
 	ArrayList<Morph> animate = new ArrayList<Morph>();
-	static ColorMaker picture;
+	static ColorMaker picture = null;
 	Point location = new Point(0,0);
 	private Timer timer;
 	int DELAY = 20;
 
 	
 	
-	public static void main(String[] args) throws IOException
-	{
+	public static void main(String[] args)	{
         JFrame frame = new JFrame("Spliter");
-		picture = new ColorMaker("Puff",920,940);
+        try{
+		picture = new ColorMaker("input.jpg",920,940);
+        }
+        catch(Exception e){}
         frame.setSize(920, 940);
         frame.add(new Map());
         frame.setVisible(true);
@@ -47,20 +49,22 @@ public class Map extends JPanel{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
-	public Map()
-	{
+	public Map()	{
 		LocationListener listen = new LocationListener();
 		addMouseListener(listen);
 		addMouseMotionListener(listen);
-		Node init = new Node(0,0,900,900,picture.consult(0, 0, 900, 900));
+		Node init;
+		if(picture!=null)
+		init = new Node(0,0,900,900,picture.consult(0, 0, picture.boardX, picture.boardY));
+		else
+		init = new Node(0,0,900,900,new Color((int)(Math.random()*255),(int)(Math.random()*255),(int)(Math.random()*255)));
 		nodes.add(init);
 		timer = new Timer(DELAY, new BoardListener());
 		timer.start();
 	}
 
-	private class LocationListener implements MouseListener,MouseMotionListener
-	{
-
+	private class LocationListener implements MouseListener,MouseMotionListener {
+		
 		public void mouseDragged(MouseEvent e) {
 			// TODO Auto-generated method stub
 			location = e.getPoint();
@@ -126,18 +130,25 @@ public class Map extends JPanel{
 				animate.remove(m);
 				int a1 = ((int)m.OldWidth)/2+m.x;
 				int b1 = ((int)m.OldHeight)/2+m.y;
-				Node nw = new Node(m.x,m.y,(int)m.OldWidth/2, (int)m.OldHeight/2,picture.consult(m.x, m.y, 1, 1));
-				Node ne = new Node(a1,m.y,(int)m.OldWidth/2, (int)m.OldHeight/2,picture.consult(m.x, m.y, 1, 1));
-				Node sw = new Node(m.x,b1,(int)m.OldWidth/2, (int)m.OldHeight/2,picture.consult(m.x, m.y, 1, 1));
-				Node se = new Node(a1,b1,(int)m.OldWidth/2, (int)m.OldHeight/2,picture.consult(m.x, m.y, 1, 1));
-				
+				Node nw,ne,sw,se;
+				if(picture!=null)	{
+				nw = new Node(m.x,m.y,(int)m.OldWidth/2, (int)m.OldHeight/2,picture.consult(m.x, m.y, 1, 1));
+				ne = new Node(a1,m.y,(int)m.OldWidth/2, (int)m.OldHeight/2,picture.consult(m.x, m.y, 1, 1));
+				sw = new Node(m.x,b1,(int)m.OldWidth/2, (int)m.OldHeight/2,picture.consult(m.x, m.y, 1, 1));
+				se = new Node(a1,b1,(int)m.OldWidth/2, (int)m.OldHeight/2,picture.consult(m.x, m.y, 1, 1));
+				}
+				else{
+					nw = new Node(m.x,m.y,(int)m.OldWidth/2, (int)m.OldHeight/2,new Color((int)(Math.random()*255),(int)(Math.random()*255),(int)(Math.random()*255)));
+					ne = new Node(a1,m.y,(int)m.OldWidth/2, (int)m.OldHeight/2,new Color((int)(Math.random()*255),(int)(Math.random()*255),(int)(Math.random()*255)));
+					sw = new Node(m.x,b1,(int)m.OldWidth/2, (int)m.OldHeight/2,new Color((int)(Math.random()*255),(int)(Math.random()*255),(int)(Math.random()*255)));
+					se = new Node(a1,b1,(int)m.OldWidth/2, (int)m.OldHeight/2,new Color((int)(Math.random()*255),(int)(Math.random()*255),(int)(Math.random()*255)));
+				}
 					if(((int)m.OldWidth)/2<=m.base)	{
 					dead.add(nw);
 					dead.add(ne);
 					dead.add(sw);
 					dead.add(se);
 					}
-					
 					else	{
 					nodes.add(nw);
 					nodes.add(ne);
